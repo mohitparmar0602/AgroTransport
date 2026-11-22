@@ -93,13 +93,31 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label asp-for="PickupVillage" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="PickupVillage" class="form-control" placeholder="Village / Roadside Landmark" />
+                        <label asp-for="PickupVillage" class="form-label fw-semibold small text-dark">Pickup Village / Corridor Landmark</label>
+                        <select asp-for="PickupVillage" class="form-select">
+                            <option value="" selected disabled>-- Select Pickup Village / Landmark --</option>
+                            <option value="Chaheru (GT Road Bridge)">Chaheru (GT Road Bridge)</option>
+                            <option value="Rawalpindi Village">Rawalpindi Village</option>
+                            <option value="Maqsudan Sabzi Mandi Road">Maqsudan Sabzi Mandi Road</option>
+                            <option value="Goraya Highway Junction">Goraya Highway Junction</option>
+                            <option value="Sahnewal Bypass">Sahnewal Bypass</option>
+                            <option value="Rayya Toll Plaza">Rayya Toll Plaza</option>
+                            <option value="Phagwara Central Market">Phagwara Central Market</option>
+                            <option value="Farmer Farm-Gate (On Highway)">Farmer Farm-Gate (On Highway)</option>
+                        </select>
                         <span asp-validation-for="PickupVillage" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="DropoffLocation" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="DropoffLocation" class="form-control" placeholder="Mandi Gate / Shed / Stall No." />
+                        <label asp-for="DropoffLocation" class="form-label fw-semibold small text-dark">Mandi Drop-off Point / Shed</label>
+                        <select asp-for="DropoffLocation" class="form-select">
+                            <option value="" selected disabled>-- Select Mandi Drop-off Location --</option>
+                            <option value="Shed No. 4, Azadpur Mandi">Shed No. 4, Azadpur Mandi</option>
+                            <option value="Gate 2 (Potato Shed), Azadpur Mandi">Gate 2 (Potato Shed), Azadpur Mandi</option>
+                            <option value="Main Auction Platform, Dana Mandi">Main Auction Platform, Dana Mandi</option>
+                            <option value="Grain Shed A, Khanna Market">Grain Shed A, Khanna Market</option>
+                            <option value="Wholesale Scale No. 1, Bhagtanwala">Wholesale Scale No. 1, Bhagtanwala</option>
+                            <option value="APMC Yard Shed 3">APMC Yard Shed 3</option>
+                        </select>
                         <span asp-validation-for="DropoffLocation" class="text-danger small"></span>
                     </div>
                 </div>

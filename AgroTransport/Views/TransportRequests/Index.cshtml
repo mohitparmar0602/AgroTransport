@@ -33,7 +33,16 @@
                 <input type="text" name="produceType" value="@ViewBag.FilterProduce" class="form-control form-control-sm" placeholder="Filter by produce (e.g. Potatoes, Wheat)..." />
             </div>
             <div class="col-md-5">
-                <input type="text" name="destination" value="@ViewBag.FilterDestination" class="form-control form-control-sm" placeholder="Filter by destination or Mandi..." />
+                <select name="destination" class="form-select form-select-sm">
+                    <option value="">All Destinations &amp; Mandis</option>
+                    <option value="Delhi" selected="@(ViewBag.FilterDestination == "Delhi")">Delhi (Azadpur Mandi)</option>
+                    <option value="Ludhiana" selected="@(ViewBag.FilterDestination == "Ludhiana")">Ludhiana (Dana Mandi)</option>
+                    <option value="Amritsar" selected="@(ViewBag.FilterDestination == "Amritsar")">Amritsar (Bhagtanwala)</option>
+                    <option value="Khanna" selected="@(ViewBag.FilterDestination == "Khanna")">Khanna Grain Market</option>
+                    <option value="Jalandhar" selected="@(ViewBag.FilterDestination == "Jalandhar")">Jalandhar</option>
+                    <option value="Chandigarh" selected="@(ViewBag.FilterDestination == "Chandigarh")">Chandigarh</option>
+                    <option value="Karnal" selected="@(ViewBag.FilterDestination == "Karnal")">Karnal</option>
+                </select>
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-agro-primary btn-sm w-100 rounded-pill">

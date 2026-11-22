@@ -29,20 +29,48 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label asp-for="SourceLocation" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="SourceLocation" class="form-control" placeholder="e.g. Phagwara, Jalandhar" />
+                        <label asp-for="SourceLocation" class="form-label fw-semibold small text-dark">Pickup / Origin City</label>
+                        <select asp-for="SourceLocation" class="form-select">
+                            <option value="" selected disabled>-- Select Pickup City --</option>
+                            <option value="Phagwara">Phagwara</option>
+                            <option value="Jalandhar">Jalandhar</option>
+                            <option value="Kapurthala">Kapurthala</option>
+                            <option value="Ludhiana">Ludhiana</option>
+                            <option value="Amritsar">Amritsar</option>
+                            <option value="Hoshiarpur">Hoshiarpur</option>
+                            <option value="Goraya">Goraya</option>
+                            <option value="Nakodar">Nakodar</option>
+                        </select>
                         <span asp-validation-for="SourceLocation" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="DestinationLocation" class="form-control" placeholder="e.g. Delhi, Ludhiana, Amritsar" />
+                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark">Destination City</label>
+                        <select asp-for="DestinationLocation" class="form-select">
+                            <option value="" selected disabled>-- Select Destination City --</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Ludhiana">Ludhiana</option>
+                            <option value="Amritsar">Amritsar</option>
+                            <option value="Jalandhar">Jalandhar</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Karnal">Karnal</option>
+                            <option value="Ambala">Ambala</option>
+                        </select>
                         <span asp-validation-for="DestinationLocation" class="text-danger small"></span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark"></label>
-                    <input asp-for="MandiName" class="form-control" placeholder="e.g. Azadpur Mandi, Dana Mandi Khanna" />
+                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark">Target Mandi (Wholesale Market)</label>
+                    <select asp-for="MandiName" class="form-select">
+                        <option value="" selected disabled>-- Select Target Mandi --</option>
+                        <option value="Azadpur Mandi">Azadpur Mandi (Delhi)</option>
+                        <option value="Dana Mandi Ludhiana">Dana Mandi Ludhiana</option>
+                        <option value="Bhagtanwala Grain Mandi">Bhagtanwala Grain Mandi (Amritsar)</option>
+                        <option value="Khanna Grain Market">Khanna Grain Market</option>
+                        <option value="New Grain Market Jalandhar">New Grain Market Jalandhar</option>
+                        <option value="Karnal APMC Mandi">Karnal APMC Mandi</option>
+                        <option value="Sector 26 Grain Market">Sector 26 Grain Market (Chandigarh)</option>
+                    </select>
                     <span asp-validation-for="MandiName" class="text-danger small"></span>
                 </div>
 

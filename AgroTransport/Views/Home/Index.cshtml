@@ -111,13 +111,32 @@
                     <label class="search-field-label">
                         <i class="bi bi-geo-alt-fill text-warning"></i> Pickup Location / Village
                     </label>
-                    <input type="text" name="source" class="search-field-input" placeholder="e.g. Phagwara, Jalandhar..." />
+                    <select name="source" class="search-field-input form-select">
+                        <option value="">All Pickup Locations</option>
+                        <option value="Phagwara">Phagwara</option>
+                        <option value="Jalandhar">Jalandhar</option>
+                        <option value="Kapurthala">Kapurthala</option>
+                        <option value="Ludhiana">Ludhiana</option>
+                        <option value="Amritsar">Amritsar</option>
+                        <option value="Hoshiarpur">Hoshiarpur</option>
+                        <option value="Goraya">Goraya</option>
+                        <option value="Nakodar">Nakodar</option>
+                    </select>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <label class="search-field-label">
-                        <i class="bi bi-pin-map-fill text-warning"></i> Destination Mandi
+                        <i class="bi bi-pin-map-fill text-warning"></i> Destination / Mandi
                     </label>
-                    <input type="text" name="destination" class="search-field-input" placeholder="e.g. Azadpur Mandi, Khanna..." />
+                    <select name="destination" class="search-field-input form-select">
+                        <option value="">All Destinations &amp; Mandis</option>
+                        <option value="Delhi">Delhi — Azadpur Mandi</option>
+                        <option value="Ludhiana">Ludhiana — Dana Mandi</option>
+                        <option value="Amritsar">Amritsar — Bhagtanwala Mandi</option>
+                        <option value="Khanna">Khanna — Asia's Largest Grain Market</option>
+                        <option value="Jalandhar">Jalandhar — New Grain Market</option>
+                        <option value="Chandigarh">Chandigarh — Sector 26 Mandi</option>
+                        <option value="Karnal">Karnal — APMC Mandi</option>
+                    </select>
                 </div>
                 <div class="col-lg-2 col-md-4">
                     <label class="search-field-label">

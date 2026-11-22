@@ -38,20 +38,50 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label asp-for="PickupLocation" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="PickupLocation" class="form-control" placeholder="Village / Farm Gate Area" />
+                        <label asp-for="PickupLocation" class="form-label fw-semibold small text-dark">Pickup Village / Area</label>
+                        <select asp-for="PickupLocation" class="form-select">
+                            <option value="" selected disabled>-- Select Pickup Village / Area --</option>
+                            <option value="Phagwara (Chaheru)">Phagwara (Chaheru)</option>
+                            <option value="Phagwara (Rawalpindi)">Phagwara (Rawalpindi)</option>
+                            <option value="Jalandhar (Maqsudan)">Jalandhar (Maqsudan)</option>
+                            <option value="Jalandhar (Cantt)">Jalandhar (Cantt)</option>
+                            <option value="Kapurthala">Kapurthala</option>
+                            <option value="Ludhiana (Sahnewal)">Ludhiana (Sahnewal)</option>
+                            <option value="Amritsar (Rayya)">Amritsar (Rayya)</option>
+                            <option value="Hoshiarpur">Hoshiarpur</option>
+                            <option value="Goraya">Goraya</option>
+                            <option value="Nakodar">Nakodar</option>
+                        </select>
                         <span asp-validation-for="PickupLocation" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark"></label>
-                        <input asp-for="DestinationLocation" class="form-control" placeholder="Destination City / District" />
+                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark">Destination City / State</label>
+                        <select asp-for="DestinationLocation" class="form-select">
+                            <option value="" selected disabled>-- Select Destination City --</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Ludhiana">Ludhiana</option>
+                            <option value="Amritsar">Amritsar</option>
+                            <option value="Jalandhar">Jalandhar</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Karnal">Karnal</option>
+                            <option value="Ambala">Ambala</option>
+                        </select>
                         <span asp-validation-for="DestinationLocation" class="text-danger small"></span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark"></label>
-                    <input asp-for="MandiName" class="form-control" placeholder="e.g. Azadpur Mandi, Khanna Grain Market" />
+                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark">Target APMC Mandi</label>
+                    <select asp-for="MandiName" class="form-select">
+                        <option value="" selected disabled>-- Select Target Mandi --</option>
+                        <option value="Azadpur Mandi">Azadpur Mandi (Delhi)</option>
+                        <option value="Dana Mandi Ludhiana">Dana Mandi Ludhiana</option>
+                        <option value="Bhagtanwala Grain Mandi">Bhagtanwala Grain Mandi (Amritsar)</option>
+                        <option value="Khanna Grain Market">Khanna Grain Market</option>
+                        <option value="New Grain Market Jalandhar">New Grain Market Jalandhar</option>
+                        <option value="Karnal APMC Mandi">Karnal APMC Mandi</option>
+                        <option value="Sector 26 Grain Market">Sector 26 Grain Market (Chandigarh)</option>
+                    </select>
                     <span asp-validation-for="MandiName" class="text-danger small"></span>
                 </div>
 

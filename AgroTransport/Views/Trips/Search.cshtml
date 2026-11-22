@@ -23,7 +23,17 @@
                 <label class="form-label small fw-bold text-dark">Source / Pickup City</label>
                 <div class="input-group">
                     <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-geo-alt"></i></span>
-                    <input type="text" name="source" value="@Model.Source" class="form-control border-start-0" placeholder="e.g. Phagwara, Jalandhar" />
+                    <select name="source" class="form-select border-start-0">
+                        <option value="">All Sources</option>
+                        <option value="Phagwara" selected="@(Model.Source == "Phagwara")">Phagwara</option>
+                        <option value="Jalandhar" selected="@(Model.Source == "Jalandhar")">Jalandhar</option>
+                        <option value="Kapurthala" selected="@(Model.Source == "Kapurthala")">Kapurthala</option>
+                        <option value="Ludhiana" selected="@(Model.Source == "Ludhiana")">Ludhiana</option>
+                        <option value="Amritsar" selected="@(Model.Source == "Amritsar")">Amritsar</option>
+                        <option value="Hoshiarpur" selected="@(Model.Source == "Hoshiarpur")">Hoshiarpur</option>
+                        <option value="Goraya" selected="@(Model.Source == "Goraya")">Goraya</option>
+                        <option value="Nakodar" selected="@(Model.Source == "Nakodar")">Nakodar</option>
+                    </select>
                 </div>
             </div>
 
@@ -31,7 +41,16 @@
                 <label class="form-label small fw-bold text-dark">Destination / District</label>
                 <div class="input-group">
                     <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-geo"></i></span>
-                    <input type="text" name="destination" value="@Model.Destination" class="form-control border-start-0" placeholder="e.g. Delhi, Ludhiana" />
+                    <select name="destination" class="form-select border-start-0">
+                        <option value="">All Destinations</option>
+                        <option value="Delhi" selected="@(Model.Destination == "Delhi")">Delhi</option>
+                        <option value="Ludhiana" selected="@(Model.Destination == "Ludhiana")">Ludhiana</option>
+                        <option value="Amritsar" selected="@(Model.Destination == "Amritsar")">Amritsar</option>
+                        <option value="Jalandhar" selected="@(Model.Destination == "Jalandhar")">Jalandhar</option>
+                        <option value="Chandigarh" selected="@(Model.Destination == "Chandigarh")">Chandigarh</option>
+                        <option value="Karnal" selected="@(Model.Destination == "Karnal")">Karnal</option>
+                        <option value="Ambala" selected="@(Model.Destination == "Ambala")">Ambala</option>
+                    </select>
                 </div>
             </div>
 
@@ -39,7 +58,15 @@
                 <label class="form-label small fw-bold text-dark">Target Mandi (Optional)</label>
                 <div class="input-group">
                     <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-shop"></i></span>
-                    <input type="text" name="mandi" value="@Model.Mandi" class="form-control border-start-0" placeholder="e.g. Azadpur Mandi" />
+                    <select name="mandi" class="form-select border-start-0">
+                        <option value="">All Mandis</option>
+                        <option value="Azadpur Mandi" selected="@(Model.Mandi == "Azadpur Mandi")">Azadpur Mandi (Delhi)</option>
+                        <option value="Dana Mandi Ludhiana" selected="@(Model.Mandi == "Dana Mandi Ludhiana")">Dana Mandi Ludhiana</option>
+                        <option value="Bhagtanwala Grain Mandi" selected="@(Model.Mandi == "Bhagtanwala Grain Mandi")">Bhagtanwala Grain Mandi (Amritsar)</option>
+                        <option value="Khanna" selected="@(Model.Mandi == "Khanna")">Khanna Grain Market</option>
+                        <option value="New Grain Market Jalandhar" selected="@(Model.Mandi == "New Grain Market Jalandhar")">New Grain Market Jalandhar</option>
+                        <option value="Karnal APMC Mandi" selected="@(Model.Mandi == "Karnal APMC Mandi")">Karnal APMC Mandi</option>
+                    </select>
                 </div>
             </div>
 
