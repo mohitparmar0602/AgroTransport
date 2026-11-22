@@ -49,33 +49,11 @@
                     Don't have an account? <a asp-controller="Account" asp-action="Register" class="text-success fw-bold text-decoration-none">Register here</a>
                 </p>
             </form>
-
-            <!-- Quick Demo Credentials for Viva / Testing -->
-            <div class="mt-4 pt-3 border-top">
-                <small class="text-muted fw-bold d-block text-center mb-2">⚡ Quick 1-Click Demo Login:</small>
-                <div class="d-flex gap-2 justify-content-center flex-wrap">
-                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="fillLogin('harpal@farmer.com', 'Farmer@123')">
-                        Farmer
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="fillLogin('gurpreet@transporter.com', 'Transporter@123')">
-                        Transporter
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="fillLogin('admin@agrotransport.com', 'Admin@123')">
-                        Admin
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        function fillLogin(email, password) {
-            document.getElementById('loginEmail').value = email;
-            document.getElementById('loginPassword').value = password;
-        }
-    </script>
 }
 
