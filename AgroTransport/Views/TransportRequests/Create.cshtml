@@ -1,0 +1,96 @@
+@model AgroTransport.Models.TransportRequest
+@{
+    ViewData["Title"] = "Post Transportation Requirement";
+}
+
+<div class="row justify-content-center py-2">
+    <div class="col-md-8 col-lg-7">
+        <div class="card card-agro p-4 p-md-5 border-0 shadow-sm">
+            <div class="mb-4">
+                <a asp-controller="TransportRequests" asp-action="Index" class="text-muted small text-decoration-none">
+                    &larr; Back to Market Requests
+                </a>
+                <h3 class="fw-bold text-dark mt-2 mb-1">Post Transportation Requirement</h3>
+                <p class="text-muted small mb-0">
+                    Feature 8 &ndash; Can't find a matching scheduled trip? Post your harvest transit requirements so carriers can organize a pooled route.
+                </p>
+            </div>
+
+            <form asp-controller="TransportRequests" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 rounded-3"></div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="ProduceType" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="ProduceType" class="form-control" placeholder="e.g. Potatoes, Wheat, Rice" />
+                        <span asp-validation-for="ProduceType" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="RequiredCapacityKg" class="form-label fw-semibold small text-dark"></label>
+                        <div class="input-group">
+                            <input asp-for="RequiredCapacityKg" class="form-control" placeholder="e.g. 1500" />
+                            <span class="input-group-text bg-light text-muted">kg</span>
+                        </div>
+                        <span asp-validation-for="RequiredCapacityKg" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="PickupLocation" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="PickupLocation" class="form-control" placeholder="Village / Farm Gate Area" />
+                        <span asp-validation-for="PickupLocation" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="DestinationLocation" class="form-control" placeholder="Destination City / District" />
+                        <span asp-validation-for="DestinationLocation" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark"></label>
+                    <input asp-for="MandiName" class="form-control" placeholder="e.g. Azadpur Mandi, Khanna Grain Market" />
+                    <span asp-validation-for="MandiName" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="PreferredDate" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="PreferredDate" class="form-control" />
+                        <span asp-validation-for="PreferredDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="EstimatedBudget" class="form-label fw-semibold small text-dark"></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted">₹</span>
+                            <input asp-for="EstimatedBudget" class="form-control" placeholder="Optional budget" />
+                        </div>
+                        <span asp-validation-for="EstimatedBudget" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="AdditionalNotes" class="form-label fw-semibold small text-dark"></label>
+                    <textarea asp-for="AdditionalNotes" class="form-control" rows="3" placeholder="Road access notes, number of sacks, loading assistance needed..."></textarea>
+                    <span asp-validation-for="AdditionalNotes" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a asp-controller="TransportRequests" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-agro-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+                        Broadcast Request <i class="bi bi-broadcast ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

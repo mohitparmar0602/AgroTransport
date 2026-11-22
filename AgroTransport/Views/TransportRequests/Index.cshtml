@@ -1,0 +1,129 @@
+@model List<AgroTransport.Models.TransportRequest>
+@{
+    ViewData["Title"] = "Open Market Transport Requests";
+}
+
+<div class="py-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <span class="badge bg-agro-primary text-white px-3 py-1 rounded-pill mb-2">Feature 8 &ndash; Marketplace</span>
+            <h2 class="fw-bold text-dark mb-1">Farmer Transport Requirements</h2>
+            <p class="text-muted small mb-0">Browse transportation requests posted by local farmers seeking vehicle capacity.</p>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            @if (User.IsInRole("Farmer"))
+            {
+                <a asp-controller="TransportRequests" asp-action="Create" class="btn btn-agro-primary btn-sm rounded-pill px-4 shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Post Your Requirement
+                </a>
+            }
+            @if (User.IsInRole("Transporter"))
+            {
+                <a asp-controller="Trips" asp-action="Create" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
+                    <i class="bi bi-calendar-plus me-1"></i> Schedule Matching Trip
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card card-agro p-3 border-0 shadow-sm mb-4">
+        <form asp-controller="TransportRequests" asp-action="Index" method="get" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <input type="text" name="produceType" value="@ViewBag.FilterProduce" class="form-control form-control-sm" placeholder="Filter by produce (e.g. Potatoes, Wheat)..." />
+            </div>
+            <div class="col-md-5">
+                <input type="text" name="destination" value="@ViewBag.FilterDestination" class="form-control form-control-sm" placeholder="Filter by destination or Mandi..." />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-agro-primary btn-sm w-100 rounded-pill">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var r in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card card-agro h-100 p-4 border-0 shadow-sm d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill">
+                                @r.ProduceType
+                            </span>
+                            <span class="badge bg-light text-dark border">
+                                @r.RequiredCapacityKg.ToString("N0") kg Needed
+                            </span>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mt-2 mb-1">
+                            @r.PickupLocation &rarr; @r.DestinationLocation
+                        </h5>
+                        <div class="text-muted small mb-3">
+                            <i class="bi bi-shop text-success me-1"></i> @r.MandiName
+                        </div>
+
+                        <div class="bg-light p-3 rounded-3 small mb-3 flex-grow-1">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Farmer:</span>
+                                <strong>@r.Farmer?.FullName</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Needed By:</span>
+                                <strong class="text-dark">@r.PreferredDate.ToString("ddd, dd MMM yyyy")</strong>
+                            </div>
+                            @if (r.EstimatedBudget.HasValue && r.EstimatedBudget.Value > 0)
+                            {
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Target Budget:</span>
+                                    <strong class="text-success">₹@r.EstimatedBudget.Value.ToString("N0")</strong>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(r.AdditionalNotes))
+                            {
+                                <div class="mt-2 pt-2 border-top text-muted font-italic">
+                                    "@r.AdditionalNotes"
+                                </div>
+                            }
+                        </div>
+
+                        @if (User.IsInRole("Transporter"))
+                        {
+                            <a asp-controller="Trips" asp-action="Create" class="btn btn-agro-primary btn-sm w-100 rounded-pill">
+                                Schedule Trip for this Route &rarr;
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="text-muted small text-center">
+                                Contact: <strong>@r.Farmer?.PhoneNumber</strong>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card card-agro p-5 text-center border-0 shadow-sm">
+            <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+            <h5 class="fw-bold text-dark">No Open Market Requests Found</h5>
+            <p class="text-muted max-w-500 mx-auto mb-3">
+                Farmers can post their customized transportation needs here when no matching scheduled trips exist.
+            </p>
+            @if (User.IsInRole("Farmer"))
+            {
+                <div>
+                    <a asp-controller="TransportRequests" asp-action="Create" class="btn btn-agro-primary rounded-pill px-4">
+                        Post New Requirement
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+

@@ -1,0 +1,74 @@
+@model List<AgroTransport.Models.VwActiveTrip>
+@{
+    ViewData["Title"] = "SQL View: vw_ActiveTransportationTrips";
+}
+
+<div class="py-2">
+    <div class="card card-agro p-4 border-0 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-success mb-2">INT402 Unit V &ndash; SQL Server Views Demonstration</span>
+                <h3 class="fw-bold text-dark mb-1">Database View: dbo.vw_ActiveTransportationTrips</h3>
+                <p class="text-muted small mb-0">
+                    This data is queried in real time directly from the SQL Server database view <code>vw_ActiveTransportationTrips</code> using EF Core Keyless Entity mapping.
+                </p>
+            </div>
+            <a asp-controller="Trips" asp-action="BookingSummaryView" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                View dbo.vw_TripBookingSummary &rarr;
+            </a>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Trip ID</th>
+                        <th>Route & Mandi</th>
+                        <th>Transporter</th>
+                        <th>Vehicle & Reg</th>
+                        <th>Departure</th>
+                        <th>Capacity (Avail / Total)</th>
+                        <th>Total Cost</th>
+                        <th>Unit Rate</th>
+                        <th>Active Bookings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong class="badge bg-light text-dark border">#@item.TripId</strong></td>
+                            <td>
+                                <strong>@item.SourceLocation &rarr; @item.DestinationLocation</strong>
+                                <small class="d-block text-muted">@item.MandiName</small>
+                            </td>
+                            <td>
+                                <div>@item.TransporterName</div>
+                                <small class="text-muted">@item.TransporterEmail</small>
+                            </td>
+                            <td>
+                                <span>@item.VehicleType</span>
+                                <small class="d-block text-muted">@item.VehicleRegistration</small>
+                            </td>
+                            <td>
+                                <div>@item.DepartureDate.ToString("dd MMM yyyy")</div>
+                                <small class="text-muted">@item.DepartureTime.ToString(@"hh\:mm")</small>
+                            </td>
+                            <td>
+                                <strong class="text-success">@item.AvailableCapacityKg.ToString("N0")</strong> / @item.TotalCapacityKg.ToString("N0") kg
+                            </td>
+                            <td>₹@item.TotalCost.ToString("N0")</td>
+                            <td><strong class="text-success">₹@item.CostPerKg.ToString("F2")/kg</strong></td>
+                            <td>
+                                <span class="badge bg-info text-dark">@item.ActiveBookingsCount Booked</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

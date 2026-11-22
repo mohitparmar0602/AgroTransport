@@ -1,0 +1,62 @@
+@model List<AgroTransport.Models.Booking>
+@{
+    ViewData["Title"] = "All Platform Bookings";
+}
+
+<div class="py-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <a asp-controller="Admin" asp-action="Index" class="text-muted small text-decoration-none">&larr; Back to Admin Console</a>
+            <h2 class="fw-bold text-dark mt-1 mb-0">Platform Bookings Audit</h2>
+            <p class="text-muted small mb-0">Complete ledger of all farmer pooling bookings and trip reservations.</p>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Farmer</th>
+                        <th>Transporter & Route</th>
+                        <th>Produce</th>
+                        <th>Load (kg)</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        var badgeCls = b.Status == "Accepted" ? "bg-success" :
+                                       b.Status == "Pending" ? "bg-warning text-dark" :
+                                       b.Status == "Completed" ? "bg-secondary" : "bg-danger";
+                        <tr>
+                            <td><strong class="text-dark">@b.BookingReference</strong></td>
+                            <td>
+                                <div>@b.Farmer?.FullName</div>
+                                <small class="text-muted">@b.Farmer?.PhoneNumber</small>
+                            </td>
+                            <td>
+                                <div>@b.Trip?.Transporter?.FullName</div>
+                                <small class="text-muted">@b.Trip?.SourceLocation &rarr; @b.Trip?.DestinationLocation</small>
+                            </td>
+                            <td>@b.ProduceType</td>
+                            <td><strong>@b.RequestedQuantityKg.ToString("N0")</strong> kg</td>
+                            <td><strong class="text-success">₹@b.TotalCost.ToString("N0")</strong></td>
+                            <td><span class="badge @badgeCls">@b.Status</span></td>
+                            <td>
+                                <a asp-controller="Bookings" asp-action="Details" asp-route-id="@b.Id" class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-1">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

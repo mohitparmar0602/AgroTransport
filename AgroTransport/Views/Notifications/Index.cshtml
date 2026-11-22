@@ -1,0 +1,83 @@
+@model List<AgroTransport.Models.Notification>
+@{
+    ViewData["Title"] = "My Notifications";
+}
+
+<div class="row justify-content-center py-2">
+    <div class="col-md-9 col-lg-8">
+        <div class="card card-agro p-4 p-md-5 border-0 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <div>
+                    <h3 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-bell-fill text-warning me-1"></i> Notifications
+                    </h3>
+                    <small class="text-muted">Feature 9 &ndash; Real-time in-application database notifications</small>
+                </div>
+                @if (Model.Any(n => !n.IsRead))
+                {
+                    <form asp-controller="Notifications" asp-action="MarkAllAsRead" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                            <i class="bi bi-check2-all me-1"></i> Mark All as Read
+                        </button>
+                    </form>
+                }
+            </div>
+
+            @if (Model.Any())
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var n in Model)
+                    {
+                        var icon = n.NotificationType == "BookingAccepted" ? "bi-check-circle-fill text-success" :
+                                   n.NotificationType == "BookingRejected" ? "bi-x-circle-fill text-danger" :
+                                   n.NotificationType == "BookingSubmitted" ? "bi-info-circle-fill text-primary" : "bi-bell-fill text-warning";
+
+                        <div class="p-3 rounded-3 border d-flex justify-content-between align-items-center @(n.IsRead ? "bg-white" : "bg-success bg-opacity-10 border-success border-opacity-25 shadow-sm")">
+                            <div class="d-flex align-items-start gap-3">
+                                <i class="bi @icon fs-4 mt-1"></i>
+                                <div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <strong class="text-dark">@n.Title</strong>
+                                        @if (!n.IsRead)
+                                        {
+                                            <span class="badge bg-success" style="font-size: 0.65rem;">New</span>
+                                        }
+                                    </div>
+                                    <p class="text-muted small mb-1">@n.Message</p>
+                                    <small class="text-muted" style="font-size: 0.72rem;">@n.CreatedAt.ToString("f")</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 align-items-center">
+                                @if (!string.IsNullOrEmpty(n.LinkUrl))
+                                {
+                                    <a href="@n.LinkUrl" class="btn btn-sm btn-outline-success rounded-pill px-3 py-1">
+                                        View
+                                    </a>
+                                }
+                                @if (!n.IsRead)
+                                {
+                                    <form asp-controller="Notifications" asp-action="MarkAsRead" asp-route-id="@n.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-light border rounded-pill px-2 py-1" title="Mark as read">
+                                            <i class="bi bi-check"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-bell-slash fs-1 d-block mb-2 text-muted"></i>
+                    <p class="mb-0">You have no notifications at this time.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

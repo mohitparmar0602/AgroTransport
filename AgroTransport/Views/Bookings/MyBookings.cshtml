@@ -1,0 +1,81 @@
+@model List<AgroTransport.Models.Booking>
+@{
+    ViewData["Title"] = "My Transportation Bookings";
+}
+
+<div class="py-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">My Transport Bookings</h2>
+            <p class="text-muted small mb-0">Track all your produce pooling reservations and delivery statuses.</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a asp-controller="Trips" asp-action="Search" class="btn btn-agro-primary btn-sm rounded-pill px-4 shadow-sm">
+                <i class="bi bi-search me-1"></i> Find More Trips
+            </a>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference & Date</th>
+                            <th>Route & Mandi</th>
+                            <th>Produce & Weight</th>
+                            <th>Unit Rate</th>
+                            <th>Total Cost</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model)
+                        {
+                            var badgeCls = b.Status == "Accepted" ? "badge-status-accepted" :
+                                           b.Status == "Pending" ? "badge-status-pending" :
+                                           b.Status == "Completed" ? "badge-status-completed" : "badge-status-cancelled";
+                            <tr>
+                                <td>
+                                    <strong class="text-dark d-block">@b.BookingReference</strong>
+                                    <small class="text-muted">@b.CreatedAt.ToString("dd MMM yyyy")</small>
+                                </td>
+                                <td>
+                                    <strong>@b.Trip?.SourceLocation &rarr; @b.Trip?.DestinationLocation</strong>
+                                    <small class="d-block text-muted">@b.Trip?.MandiName</small>
+                                </td>
+                                <td>
+                                    <span>@b.ProduceType</span>
+                                    <small class="d-block fw-bold">@b.RequestedQuantityKg.ToString("N0") kg</small>
+                                </td>
+                                <td>₹@b.CostPerKg.ToString("F2")/kg</td>
+                                <td><strong class="text-success fs-6">₹@b.TotalCost.ToString("N0")</strong></td>
+                                <td><span class="badge @badgeCls">@b.Status</span></td>
+                                <td>
+                                    <a asp-controller="Bookings" asp-action="Details" asp-route-id="@b.Id" class="btn btn-sm btn-outline-success rounded-pill px-3 py-1">
+                                        View Slip
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                <h5 class="fw-bold text-dark">No Bookings Found</h5>
+                <p class="mb-3">You have not joined any shared transportation trips yet.</p>
+                <a asp-controller="Trips" asp-action="Search" class="btn btn-agro-primary rounded-pill px-4">
+                    Find Available Trips
+                </a>
+            </div>
+        }
+    </div>
+</div>
+

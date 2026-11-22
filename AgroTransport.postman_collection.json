@@ -1,0 +1,271 @@
+{
+  "info": {
+    "_postman_id": "c1f8a840-7e3e-4b2a-8c31-agrotransport01",
+    "name": "AgroTransport REST API (INT402 Unit VI)",
+    "description": "Postman API Collection for testing RESTful Web API controllers in AgroTransport (SIH PR424, INT402). Covers Vehicles, Trips, and Pooling Bookings CRUD with standard status codes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Vehicles API",
+      "item": [
+        {
+          "name": "Get All Vehicles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiclesapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehiclesapi"]
+            }
+          }
+        },
+        {
+          "name": "Get Vehicle by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiclesapi/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehiclesapi", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Vehicle (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrationNumber\": \"PB-10-ZX-7788\",\n  \"vehicleType\": \"Medium Truck\",\n  \"capacityKg\": 6000,\n  \"model\": \"Eicher Pro 3015\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiclesapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehiclesapi"]
+            }
+          }
+        },
+        {
+          "name": "Update Vehicle (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"registrationNumber\": \"PB-10-DX-9901\",\n  \"vehicleType\": \"Medium Truck\",\n  \"capacityKg\": 5500,\n  \"model\": \"Eicher Pro 2049 HD\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiclesapi/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehiclesapi", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Vehicle (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiclesapi/4",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehiclesapi", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trips API",
+      "item": [
+        {
+          "name": "Get All Available Trips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tripsapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tripsapi"]
+            }
+          }
+        },
+        {
+          "name": "Search Trips by Route (QueryString)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tripsapi?source=Phagwara&destination=Delhi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tripsapi"],
+              "query": [
+                {
+                  "key": "source",
+                  "value": "Phagwara"
+                },
+                {
+                  "key": "destination",
+                  "value": "Delhi"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Trip by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tripsapi/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tripsapi", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Trip (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicleId\": 1,\n  \"sourceLocation\": \"Phagwara\",\n  \"destinationLocation\": \"Amritsar\",\n  \"mandiName\": \"Amritsar Vegetable Market\",\n  \"departureDate\": \"2026-11-25T00:00:00Z\",\n  \"departureTime\": \"06:00:00\",\n  \"totalCost\": 5000,\n  \"description\": \"Morning direct transit for produce pooling.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tripsapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tripsapi"]
+            }
+          }
+        },
+        {
+          "name": "Update Trip Status (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tripsapi/1/status?status=Completed",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tripsapi", "1", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Completed"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings API",
+      "item": [
+        {
+          "name": "Get All Bookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookingsapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookingsapi"]
+            }
+          }
+        },
+        {
+          "name": "Get Booking by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookingsapi/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookingsapi", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Booking Request (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tripId\": 2,\n  \"produceType\": \"Mustard Seeds\",\n  \"requestedQuantityKg\": 500,\n  \"pickupVillage\": \"Chaheru\",\n  \"dropoffLocation\": \"Ludhiana Dana Mandi Gate 1\",\n  \"specialInstructions\": \"Packed in 50kg bags.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bookingsapi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookingsapi"]
+            }
+          }
+        },
+        {
+          "name": "Accept Booking (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookingsapi/3/accept?remarks=Confirmed+space",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookingsapi", "3", "accept"],
+              "query": [
+                {
+                  "key": "remarks",
+                  "value": "Confirmed space"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookingsapi/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookingsapi", "3"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,121 @@
+@model AgroTransport.ViewModels.Account.RegisterViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="row justify-content-center py-4">
+    <div class="col-md-8 col-lg-7">
+        <div class="card card-agro border-0 shadow-lg p-4 p-md-5">
+            <div class="text-center mb-4">
+                <div class="brand-icon-box mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Join AgroTransport</h3>
+                <p class="text-muted small">Select your role and start sharing or providing agricultural transportation</p>
+            </div>
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 rounded-3" role="alert"></div>
+
+                <!-- Role Selector -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold small text-dark d-block">Select Account Type:</label>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <input type="radio" class="btn-check" name="UserRole" id="roleFarmer" value="Farmer" @(Model.UserRole == "Farmer" ? "checked" : "") autocomplete="off">
+                            <label class="btn btn-outline-success w-100 py-3 rounded-3 text-start d-flex align-items-center gap-3" for="roleFarmer">
+                                <i class="bi bi-person-heart fs-3"></i>
+                                <div>
+                                    <strong class="d-block">Farmer</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">I want to pool space & ship produce</small>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <input type="radio" class="btn-check" name="UserRole" id="roleTransporter" value="Transporter" @(Model.UserRole == "Transporter" ? "checked" : "") autocomplete="off">
+                            <label class="btn btn-outline-primary w-100 py-3 rounded-3 text-start d-flex align-items-center gap-3" for="roleTransporter">
+                                <i class="bi bi-truck fs-3"></i>
+                                <div>
+                                    <strong class="d-block">Transporter</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">I own vehicles & provide transport</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <span asp-validation-for="UserRole" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="FullName" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="FullName" class="form-control" placeholder="e.g. Gurpreet Singh" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="MobileNumber" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="MobileNumber" class="form-control" placeholder="10-digit mobile number" />
+                        <span asp-validation-for="MobileNumber" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold small text-dark"></label>
+                    <input asp-for="Email" class="form-control" placeholder="e.g. farmer@example.com" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Password" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="Password" class="form-control" placeholder="At least 6 characters" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-enter password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-dark mt-4 mb-2 small text-uppercase">Location Information</h6>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="Village" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="Village" class="form-control" placeholder="Village / Area" />
+                        <span asp-validation-for="Village" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="District" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="District" class="form-control" placeholder="District" />
+                        <span asp-validation-for="District" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="State" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="State" class="form-control" placeholder="State" />
+                        <span asp-validation-for="State" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Address" class="form-label fw-semibold small text-dark"></label>
+                    <textarea asp-for="Address" class="form-control" rows="2" placeholder="Nearby highway, landmark, or farm address (optional)"></textarea>
+                    <span asp-validation-for="Address" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-agro-primary w-100 py-2 rounded-pill fw-bold shadow-sm mb-3">
+                    Create My Account <i class="bi bi-check-circle ms-1"></i>
+                </button>
+
+                <p class="text-center text-muted small mb-0">
+                    Already registered? <a asp-controller="Account" asp-action="Login" class="text-success fw-bold text-decoration-none">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

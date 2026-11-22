@@ -1,0 +1,129 @@
+@model AgroTransport.ViewModels.Bookings.CreateBookingViewModel
+@{
+    ViewData["Title"] = "Join Shared Transportation Trip";
+}
+
+<div class="row justify-content-center py-2">
+    <div class="col-md-9 col-lg-8">
+        <div class="card card-agro p-4 p-md-5 border-0 shadow-sm">
+            <div class="mb-4">
+                <a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.TripId" class="text-muted small text-decoration-none">
+                    &larr; Back to Trip Details
+                </a>
+                <h3 class="fw-bold text-dark mt-2 mb-1">Book Space in Pooled Vehicle</h3>
+                <p class="text-muted small mb-0">
+                    Feature 6 &ndash; Transportation Pooling: Share vehicle space with fellow farmers and pay strictly for your produce load weight.
+                </p>
+            </div>
+
+            <!-- Trip Summary Bar -->
+            <div class="bg-light p-3 rounded-3 mb-4 border">
+                <div class="row g-2 small">
+                    <div class="col-md-4">
+                        <span class="text-muted d-block">Route:</span>
+                        <strong class="text-dark">@Model.SourceLocation &rarr; @Model.DestinationLocation</strong>
+                        <small class="d-block text-muted">@Model.MandiName</small>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-muted d-block">Departure Schedule:</span>
+                        <strong class="text-dark">@Model.DepartureDate.ToString("dd MMM yyyy") at @Model.DepartureTime.ToString(@"hh\:mm")</strong>
+                        <small class="d-block text-muted">Vehicle: @Model.VehicleModel</small>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <span class="text-muted d-block">Remaining Space:</span>
+                        <strong class="text-success fs-6">@Model.AvailableCapacityKg.ToString("N0") kg</strong>
+                        <span class="badge bg-success bg-opacity-10 text-success d-inline-block mt-1">₹@Model.CostPerKg.ToString("F2") / kg</span>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-controller="Bookings" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="TripId" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 rounded-3"></div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="ProduceType" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="ProduceType" class="form-control" placeholder="e.g. Potatoes, Wheat, Tomatoes" />
+                        <span asp-validation-for="ProduceType" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="RequestedQuantityKg" class="form-label fw-semibold small text-dark"></label>
+                        <div class="input-group">
+                            <input asp-for="RequestedQuantityKg" id="bookingQuantityInput" max="@Model.AvailableCapacityKg" min="1" step="10" class="form-control" />
+                            <span class="input-group-text bg-light text-muted">kg</span>
+                        </div>
+                        <span asp-validation-for="RequestedQuantityKg" class="text-danger small"></span>
+                        <small class="text-muted">Maximum available: @Model.AvailableCapacityKg.ToString("N0") kg</small>
+                    </div>
+                </div>
+
+                <!-- Dynamic Live Cost Preview Box (Feature 6 Formula) -->
+                <div class="card bg-agro-light border-0 p-3 rounded-3 mb-4" id="costCalculatorWidget">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-calculator-fill text-success fs-5"></i>
+                        <h6 class="fw-bold text-success mb-0">Dynamic Pooling Cost Calculation:</h6>
+                    </div>
+                    <div class="row g-2 small text-dark">
+                        <div class="col-sm-4">
+                            <span class="text-muted d-block">Unit Rate:</span>
+                            <span id="tripCostPerKg" data-cost-per-kg="@Model.CostPerKg" class="fw-bold">
+                                ₹@Model.CostPerKg.ToString("F2") / kg
+                            </span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="text-muted d-block">Your Total Calculated Share:</span>
+                            <span id="calculatedTotalCostDisplay" class="fs-5 fw-bold text-success">
+                                ₹@((Model.RequestedQuantityKg * Model.CostPerKg).ToString("N0"))
+                            </span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="text-muted d-block">Estimated Savings vs Charter:</span>
+                            <span id="calculatedSavingsDisplay" class="fs-6 fw-bold text-primary">
+                                ₹@((Model.TotalTripCost - (Model.RequestedQuantityKg * Model.CostPerKg)).ToString("N0"))
+                            </span>
+                            <span id="tripTotalFullCost" data-total-cost="@Model.TotalTripCost" class="d-none"></span>
+                        </div>
+                    </div>
+                    <small class="text-muted mt-2 d-block" style="font-size: 0.72rem;">
+                        Formula: <code>Cost = Requested Weight &times; (Total Trip Cost / Total Vehicle Capacity)</code>. Recalculated server-side.
+                    </small>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="PickupVillage" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="PickupVillage" class="form-control" placeholder="Village / Roadside Landmark" />
+                        <span asp-validation-for="PickupVillage" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DropoffLocation" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="DropoffLocation" class="form-control" placeholder="Mandi Gate / Shed / Stall No." />
+                        <span asp-validation-for="DropoffLocation" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="SpecialInstructions" class="form-label fw-semibold small text-dark"></label>
+                    <textarea asp-for="SpecialInstructions" class="form-control" rows="2" placeholder="Bag count, crate stacking, fragile packaging instructions..."></textarea>
+                    <span asp-validation-for="SpecialInstructions" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.TripId" class="btn btn-outline-secondary rounded-pill px-4">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-agro-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+                        Submit Booking Request <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

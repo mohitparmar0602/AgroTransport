@@ -1,0 +1,97 @@
+@model AgroTransport.ViewModels.Trips.CreateTripViewModel
+@{
+    ViewData["Title"] = "Publish Transportation Trip";
+}
+
+<div class="row justify-content-center py-2">
+    <div class="col-md-9 col-lg-8">
+        <div class="card card-agro p-4 p-md-5 border-0 shadow-sm">
+            <div class="mb-4">
+                <a asp-controller="Transporter" asp-action="Index" class="text-muted small text-decoration-none">
+                    &larr; Back to Transporter Dashboard
+                </a>
+                <h3 class="fw-bold text-dark mt-2 mb-1">Publish New Transportation Trip</h3>
+                <p class="text-muted small mb-0">
+                    Specify route, vehicle capacity, and departure schedule. Farmers along this highway can pool space and share trip costs.
+                </p>
+            </div>
+
+            <form asp-controller="Trips" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 rounded-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="VehicleId" class="form-label fw-semibold small text-dark"></label>
+                    <select asp-for="VehicleId" asp-items="Model.AvailableVehicles" class="form-select"></select>
+                    <span asp-validation-for="VehicleId" class="text-danger small"></span>
+                    <small class="text-muted">Total vehicle capacity will be automatically loaded from your vehicle registry.</small>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="SourceLocation" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="SourceLocation" class="form-control" placeholder="e.g. Phagwara, Jalandhar" />
+                        <span asp-validation-for="SourceLocation" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DestinationLocation" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="DestinationLocation" class="form-control" placeholder="e.g. Delhi, Ludhiana, Amritsar" />
+                        <span asp-validation-for="DestinationLocation" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MandiName" class="form-label fw-semibold small text-dark"></label>
+                    <input asp-for="MandiName" class="form-control" placeholder="e.g. Azadpur Mandi, Dana Mandi Khanna" />
+                    <span asp-validation-for="MandiName" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="DepartureDate" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="DepartureDate" class="form-control" />
+                        <span asp-validation-for="DepartureDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DepartureTime" class="form-label fw-semibold small text-dark"></label>
+                        <input asp-for="DepartureTime" type="time" class="form-control" />
+                        <span asp-validation-for="DepartureTime" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TotalCost" class="form-label fw-semibold small text-dark"></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted">₹</span>
+                        <input asp-for="TotalCost" class="form-control" placeholder="e.g. 10000" />
+                    </div>
+                    <span asp-validation-for="TotalCost" class="text-danger small"></span>
+                    <div class="bg-light p-2 rounded-2 mt-2 small text-muted">
+                        <i class="bi bi-info-circle text-success me-1"></i>
+                        <strong>Automatic Pooling Formula:</strong> The platform derives <em>Cost Per Kilogram = Total Cost / Total Vehicle Capacity</em>. Each joining farmer will pay strictly for their reserved weight.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-semibold small text-dark"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="En route highway stops, waterproof tarp availability, preferred produce types..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a asp-controller="Transporter" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-agro-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+                        Publish Trip for Farmers <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

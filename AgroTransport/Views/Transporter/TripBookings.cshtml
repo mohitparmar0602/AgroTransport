@@ -1,0 +1,186 @@
+@model List<AgroTransport.Models.Booking>
+@{
+    var trip = ViewBag.Trip as AgroTransport.Models.TransportTrip;
+    ViewData["Title"] = $"Trip Pooling Roster &ndash; #{trip?.Id}";
+}
+
+<div class="py-2">
+    <div class="mb-4">
+        <a asp-controller="Transporter" asp-action="Index" class="text-muted small text-decoration-none">
+            &larr; Back to Transporter Dashboard
+        </a>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mt-2">
+            <div>
+                <h2 class="fw-bold text-dark mb-1">
+                    Trip Space Roster &ndash; @trip?.SourceLocation to @trip?.DestinationLocation
+                </h2>
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-shop text-success"></i> Target Mandi: <strong>@trip?.MandiName</strong> &bull;
+                    Vehicle: <strong>@trip?.Vehicle?.Model (@trip?.Vehicle?.RegistrationNumber)</strong> &bull;
+                    Departure: <strong>@trip?.DepartureDate.ToString("dd MMM yyyy") at @trip?.DepartureTime.ToString(@"hh\:mm")</strong>
+                </p>
+            </div>
+            <div class="mt-3 mt-md-0 d-flex gap-2 align-items-center">
+                <span class="badge @(trip?.TripStatus == "Scheduled" ? "bg-success" : "bg-secondary") fs-6 px-3 py-2">
+                    @trip?.TripStatus
+                </span>
+                @if (trip?.TripStatus == "Scheduled")
+                {
+                    <form asp-controller="Trips" asp-action="UpdateStatus" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="tripId" value="@trip.Id" />
+                        <input type="hidden" name="status" value="Completed" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill" onclick="return confirm('Mark this entire trip as completed at destination?')">
+                            <i class="bi bi-check2-circle"></i> Mark Trip Completed
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Pooling Capacity Breakdown Card -->
+    <div class="card card-agro p-4 border-0 mb-4 shadow-sm">
+        <h5 class="fw-bold text-dark mb-3">Vehicle Capacity & Revenue Breakdown</h5>
+        @{
+            decimal totalKg = trip?.TotalCapacityKg ?? 0;
+            decimal availKg = trip?.AvailableCapacityKg ?? 0;
+            decimal bookedKg = totalKg - availKg;
+            decimal usagePct = totalKg > 0 ? (bookedKg / totalKg) * 100 : 0;
+            decimal collectedRevenue = Model.Where(b => b.Status == "Accepted").Sum(b => b.TotalCost);
+        }
+        <div class="row g-4 align-items-center">
+            <div class="col-md-7">
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>Occupied Capacity: <strong>@bookedKg.ToString("N0") kg</strong></span>
+                    <span>Remaining Space: <strong class="text-success">@availKg.ToString("N0") kg</strong></span>
+                    <span>Total Truck Bed: <strong>@totalKg.ToString("N0") kg</strong></span>
+                </div>
+                <div class="progress pooling-progress mb-2" style="height: 14px;">
+                    <div class="progress-bar bg-success" style="width: @usagePct%"></div>
+                </div>
+                <small class="text-muted">
+                    @usagePct.ToString("F1")% of vehicle capacity booked by pooled farmers. Space automatically restores upon booking cancellation.
+                </small>
+            </div>
+
+            <div class="col-md-5">
+                <div class="bg-light p-3 rounded-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small d-block">Charter Fare Target:</span>
+                        <strong class="fs-5 text-dark">₹@trip?.TotalCost.ToString("N0")</strong>
+                    </div>
+                    <div class="text-end">
+                        <span class="text-muted small d-block">Collected from Farmers:</span>
+                        <strong class="fs-5 text-success">₹@collectedRevenue.ToString("N0")</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farmers Pooling List Table -->
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="bi bi-people-fill text-success me-1"></i> Farmer Pooling Requests & Active Bookings
+            </h5>
+            <span class="badge bg-light text-dark border">@Model.Count Total Bookings</span>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Farmer & Contact</th>
+                            <th>Produce Type</th>
+                            <th>Requested Weight</th>
+                            <th>Calculated Share</th>
+                            <th>Pickup Village & Instructions</th>
+                            <th>Status</th>
+                            <th>Transporter Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="small">
+                        @foreach (var booking in Model)
+                        {
+                            var badgeCls = booking.Status == "Accepted" ? "badge-status-accepted" :
+                                           booking.Status == "Pending" ? "badge-status-pending" :
+                                           booking.Status == "Completed" ? "badge-status-completed" : "badge-status-cancelled";
+                            <tr>
+                                <td>
+                                    <strong class="d-block text-dark">@booking.Farmer?.FullName</strong>
+                                    <small class="text-muted"><i class="bi bi-telephone"></i> @booking.Farmer?.PhoneNumber</small>
+                                </td>
+                                <td>
+                                    <strong>@booking.ProduceType</strong>
+                                    <small class="d-block text-muted">Ref: @booking.BookingReference</small>
+                                </td>
+                                <td>
+                                    <span class="fs-6 fw-bold">@booking.RequestedQuantityKg.ToString("N0")</span> kg
+                                </td>
+                                <td>
+                                    <strong class="text-success fs-6">₹@booking.TotalCost.ToString("N0")</strong>
+                                    <small class="d-block text-muted">(₹@booking.CostPerKg.ToString("F2")/kg)</small>
+                                </td>
+                                <td>
+                                    <div><i class="bi bi-geo-alt text-danger"></i> @(booking.PickupVillage ?? booking.Farmer?.Village ?? "En route")</div>
+                                    @if (!string.IsNullOrEmpty(booking.SpecialInstructions))
+                                    {
+                                        <small class="text-muted font-italic d-block">"@booking.SpecialInstructions"</small>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge @badgeCls">@booking.Status</span>
+                                </td>
+                                <td>
+                                    @if (booking.Status == "Pending")
+                                    {
+                                        <div class="d-flex gap-2">
+                                            <form asp-controller="Bookings" asp-action="Accept" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                                <button type="submit" class="btn btn-sm btn-success rounded-pill px-2 py-1">
+                                                    <i class="bi bi-check-lg"></i> Accept
+                                                </button>
+                                            </form>
+                                            <form asp-controller="Bookings" asp-action="Reject" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 py-1">
+                                                    <i class="bi bi-x-lg"></i> Decline
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else if (booking.Status == "Accepted")
+                                    {
+                                        <a asp-controller="Bookings" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1">
+                                            View Slip
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">&mdash;</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-truck fs-1 d-block mb-2 text-muted"></i>
+                <p class="mb-0">No farmers have booked space on this trip yet. The trip is publicly searchable in the trip directory.</p>
+            </div>
+        }
+    </div>
+</div>
+

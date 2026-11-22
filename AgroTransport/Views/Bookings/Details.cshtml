@@ -1,0 +1,128 @@
+@model AgroTransport.Models.Booking
+@{
+    ViewData["Title"] = $"Booking Slip #{Model.BookingReference}";
+    var badgeCls = Model.Status == "Accepted" ? "bg-success" :
+                   Model.Status == "Pending" ? "bg-warning text-dark" :
+                   Model.Status == "Completed" ? "bg-secondary" : "bg-danger";
+}
+
+<div class="row justify-content-center py-2">
+    <div class="col-md-9 col-lg-8">
+        <div class="card card-agro p-4 p-md-5 border-0 shadow-sm">
+            <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-4">
+                <div>
+                    <span class="badge @badgeCls fs-6 px-3 py-2 rounded-pill mb-2">@Model.Status</span>
+                    <h3 class="fw-bold text-dark mb-0">Booking Reference: @Model.BookingReference</h3>
+                    <small class="text-muted">Booked on @Model.CreatedAt.ToString("f")</small>
+                </div>
+                <div class="text-end">
+                    <span class="fs-4 fw-bold text-success d-block">₹@Model.TotalCost.ToString("N0")</span>
+                    <small class="text-muted">Proportional Fare</small>
+                </div>
+            </div>
+
+            <!-- Trip & Transport Details -->
+            <div class="bg-light p-4 rounded-4 mb-4">
+                <h6 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-truck text-success me-1"></i> Transportation & Vehicle Route
+                </h6>
+                <div class="row g-3 small">
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Route:</span>
+                        <strong class="text-dark">@Model.Trip?.SourceLocation &rarr; @Model.Trip?.DestinationLocation</strong>
+                        <div class="text-muted"><i class="bi bi-shop text-success"></i> @Model.Trip?.MandiName</div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Departure Schedule:</span>
+                        <strong class="text-dark">@Model.Trip?.DepartureDate.ToString("dd MMM yyyy") at @Model.Trip?.DepartureTime.ToString(@"hh\:mm")</strong>
+                        <div class="text-muted">Vehicle: @Model.Trip?.Vehicle?.Model (@Model.Trip?.Vehicle?.RegistrationNumber)</div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Transporter:</span>
+                        <strong>@Model.Trip?.Transporter?.FullName</strong>
+                        <div class="text-muted"><i class="bi bi-telephone"></i> @Model.Trip?.Transporter?.PhoneNumber</div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Farmer:</span>
+                        <strong>@Model.Farmer?.FullName</strong>
+                        <div class="text-muted"><i class="bi bi-geo-alt"></i> @Model.Farmer?.Village, @Model.Farmer?.District</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produce & Load Calculation Breakdown -->
+            <h6 class="fw-bold text-dark mb-3">Load & Cost Breakdown</h6>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Produce Type</th>
+                            <th>Load Weight (kg)</th>
+                            <th>Unit Rate (₹/kg)</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>@Model.ProduceType</strong></td>
+                            <td>@Model.RequestedQuantityKg.ToString("N0") kg</td>
+                            <td>₹@Model.CostPerKg.ToString("F2")</td>
+                            <td><strong class="text-success fs-6">₹@Model.TotalCost.ToString("N0")</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Logistics Location Details -->
+            <div class="row g-3 small mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-white h-100">
+                        <strong class="d-block text-dark mb-1"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Pickup Location:</strong>
+                        <span class="text-muted">@(Model.PickupVillage ?? Model.Farmer?.Village ?? "En route highway stop")</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-white h-100">
+                        <strong class="d-block text-dark mb-1"><i class="bi bi-box-seam text-primary me-1"></i> Mandi Dropoff:</strong>
+                        <span class="text-muted">@(Model.DropoffLocation ?? "Main Wholesale Market Gate")</span>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.SpecialInstructions))
+            {
+                <div class="mb-4 small">
+                    <strong class="d-block text-dark mb-1">Farmer Instructions:</strong>
+                    <div class="bg-light p-2 rounded-2 text-muted">@Model.SpecialInstructions</div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.TransporterRemarks))
+            {
+                <div class="mb-4 small">
+                    <strong class="d-block text-dark mb-1">Transporter Remarks:</strong>
+                    <div class="bg-light p-2 rounded-2 text-muted">@Model.TransporterRemarks</div>
+                </div>
+            }
+
+            <!-- Action Controls -->
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary rounded-pill px-4">
+                    &larr; Back
+                </a>
+
+                @if (Model.Status == "Pending" || Model.Status == "Accepted")
+                {
+                    <form asp-controller="Bookings" asp-action="Cancel" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="bookingId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-danger rounded-pill px-4" onclick="return confirm('Are you sure you want to cancel this booking? If accepted, vehicle capacity will be restored.')">
+                            <i class="bi bi-x-circle me-1"></i> Cancel Booking
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

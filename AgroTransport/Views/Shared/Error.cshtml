@@ -1,0 +1,43 @@
+@model AgroTransport.Controllers.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="row justify-content-center my-5">
+    <div class="col-md-8 col-lg-6 text-center">
+        <div class="card border-0 shadow-sm rounded-4 p-5">
+            <div class="display-1 text-danger mb-3">
+                <i class="bi bi-exclamation-octagon"></i>
+            </div>
+            <h2 class="h3 fw-bold text-dark mb-2">An error occurred</h2>
+            <p class="text-muted mb-4">An unexpected issue occurred while processing your request. Our system logs have captured this incident.</p>
+            
+            @if (Model.ShowRequestId)
+            {
+                <div class="bg-light p-3 rounded-3 mb-3 text-start font-monospace small">
+                    <span class="text-muted">Request ID:</span> <code>@Model.RequestId</code>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger text-start small font-monospace mb-4">
+                    <strong>Diagnostic Details:</strong>
+                    <div class="mt-1 text-break">@Model.ErrorMessage</div>
+                    @if (!string.IsNullOrEmpty(Model.StackTrace))
+                    {
+                        <hr class="my-2" />
+                        <pre class="mt-2 text-wrap mb-0" style="max-height: 180px; overflow-y: auto; font-size: 0.75rem;">@Model.StackTrace</pre>
+                    }
+                </div>
+            }
+
+            <div>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-agro-primary px-4 py-2 rounded-pill">
+                    <i class="bi bi-house me-1"></i> Return to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

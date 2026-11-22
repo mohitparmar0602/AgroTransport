@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "How Agricultural Transportation Pooling Works — AgroTransport";
+}
+
+<div class="dash-header-box mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <span class="badge bg-warning text-dark fw-bold px-3 py-1 rounded-pill mb-2">
+                <i class="bi bi-diagram-3-fill me-1"></i> Pooling Architecture
+            </span>
+            <h2 class="fw-bold mb-1">How Transportation Pooling Works</h2>
+            <p class="text-white-50 mb-0">Multi-farmer vehicle space sharing with mathematical cost distribution.</p>
+        </div>
+        <div>
+            <a asp-controller="Trips" asp-action="Search" class="btn-freight-primary">
+                <i class="bi bi-search"></i> Search Active Trips
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 4 Step Process Cards -->
+<div class="row g-4 mb-5">
+    <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+            <span class="step-num-badge">01</span>
+            <div class="step-icon-wrap">
+                <i class="bi bi-search"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Find a Transporter</h5>
+            <p class="small text-muted mb-0">
+                Farmers search available transport vehicles heading towards their target Mandi on their scheduled harvest date.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+            <span class="step-num-badge">02</span>
+            <div class="step-icon-wrap">
+                <i class="bi bi-boxes"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Share Vehicle Space</h5>
+            <p class="small text-muted mb-0">
+                View real-time remaining vehicle capacity in kilograms and book only what your crop requires.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+            <span class="step-num-badge">03</span>
+            <div class="step-icon-wrap">
+                <i class="bi bi-calculator"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Pool Your Produce</h5>
+            <p class="small text-muted mb-0">
+                The platform algorithm groups shipments on the corridor and calculates your fair pro-rata share of total fuel and trip costs.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+            <span class="step-num-badge">04</span>
+            <div class="step-icon-wrap">
+                <i class="bi bi-shop"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Reach Your Mandi</h5>
+            <p class="small text-muted mb-0">
+                Produce arrives fresh at the Mandi scale in time for the morning wholesale auction.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Math Formula & Practical Example -->
+<div class="dash-card p-4 p-md-5 mb-5">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+            <span class="badge bg-warning text-dark fw-bold px-3 py-1 rounded-pill mb-2">
+                <i class="bi bi-calculator-fill me-1"></i> Transparent Pricing
+            </span>
+            <h3 class="fw-bold mb-3">Mathematical Cost-Sharing Formula</h3>
+            <p class="text-muted">
+                Instead of forcing a farmer with 500 kg of vegetables to charter an entire truck for ₹8,000, AgroTransport partitions the cost based strictly on weight:
+            </p>
+
+            <div class="bg-dark text-white p-3 rounded-3 mb-3 font-monospace small">
+                <div class="text-warning fw-bold mb-1">Unit Rate (₹/kg) = TotalTripCost / TotalVehicleCapacityKg</div>
+                <div class="text-success fw-bold">Farmer Booking Cost = RequestedKg &times; UnitRate</div>
+            </div>
+            <p class="small text-muted mb-0">
+                <i class="bi bi-shield-check text-success me-1"></i>
+                All fares are verified server-side inside the ASP.NET Core service layer to prevent client tampering.
+            </p>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="bg-light p-4 rounded-4 border">
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Real-world Example (Phagwara to Delhi):</h5>
+                <ul class="list-unstyled small mb-3">
+                    <li class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Vehicle Capacity:</span>
+                        <strong>5,000 kg (Eicher Pro 2049)</strong>
+                    </li>
+                    <li class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Trip Expense:</span>
+                        <strong>₹10,000</strong>
+                    </li>
+                    <li class="d-flex justify-content-between py-1 border-bottom">
+                        <span class="text-muted">Calculated Rate:</span>
+                        <span class="text-success fw-bold fs-6">₹2.00 / kg</span>
+                    </li>
+                </ul>
+
+                <div class="bg-white p-3 rounded-3 border small">
+                    <div class="d-flex justify-content-between py-1">
+                        <span><strong>Farmer 1:</strong> 1,000 kg Potatoes</span>
+                        <span class="text-dark fw-bold">1,000 &times; ₹2 = <strong>₹2,000</strong></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span><strong>Farmer 2:</strong> 1,500 kg Wheat</span>
+                        <span class="text-dark fw-bold">1,500 &times; ₹2 = <strong>₹3,000</strong></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1 text-muted border-top mt-1 pt-1">
+                        <span><strong>Open Capacity:</strong> 2,500 kg for other farmers</span>
+                        <span class="text-success fw-bold">Remaining Available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

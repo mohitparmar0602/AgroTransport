@@ -1,0 +1,809 @@
+/* ==========================================================================
+   AGROTRANSPORT — COMMERCIAL FREIGHT & AGRICULTURAL POOLING DESIGN SYSTEM
+   Inspired by Behance Commercial Transport & Logistics Sales Page
+   SIH Problem PR424 | INT402
+   ========================================================================== */
+
+:root {
+    /* Color Palette */
+    --at-dark-900: #070b14;
+    --at-dark-800: #0b1120;
+    --at-dark-700: #0f172a;
+    --at-dark-600: #1e293b;
+    --at-dark-card: #111a2e;
+    --at-dark-border: rgba(255, 255, 255, 0.08);
+
+    /* Brand Accents */
+    --at-orange: #ff6b00;
+    --at-orange-hover: #e65c00;
+    --at-orange-glow: rgba(255, 107, 0, 0.35);
+    --at-amber: #f59e0b;
+    --at-emerald: #10b981;
+    --at-emerald-hover: #059669;
+    --at-emerald-glow: rgba(16, 185, 129, 0.25);
+    
+    /* Light Surfaces & Neutrals */
+    --at-bg-light: #f8fafc;
+    --at-surface-card: #ffffff;
+    --at-border-light: #e2e8f0;
+    --at-text-dark: #0f172a;
+    --at-text-muted: #64748b;
+    --at-text-light: #94a3b8;
+
+    /* Shadows & Transitions */
+    --at-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --at-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --at-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+    --at-shadow-glow: 0 12px 30px rgba(255, 107, 0, 0.25);
+    --at-radius-sm: 8px;
+    --at-radius-md: 14px;
+    --at-radius-lg: 20px;
+    --at-radius-xl: 28px;
+    --at-transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Typography & Reset */
+body {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--at-bg-light);
+    color: var(--at-text-dark);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--at-text-dark);
+}
+
+/* ==========================================================================
+   NAVIGATION BAR — Modern Commercial Freight Header
+   ========================================================================== */
+.at-navbar {
+    background: #090e1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    transition: var(--at-transition);
+}
+
+.at-brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.at-brand-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--at-orange) 0%, #ff8c00 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 14px var(--at-orange-glow);
+}
+
+.at-brand-accent {
+    color: var(--at-orange);
+}
+
+.at-nav-link {
+    color: #cbd5e1 !important;
+    font-weight: 500;
+    font-size: 0.94rem;
+    padding: 0.5rem 0.9rem !important;
+    border-radius: var(--at-radius-sm);
+    transition: var(--at-transition);
+}
+
+.at-nav-link:hover,
+.at-nav-link.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
+   BUTTONS & CTAs
+   ========================================================================== */
+.btn-freight-primary {
+    background: linear-gradient(135deg, var(--at-orange) 0%, #ff8c00 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    padding: 0.75rem 1.6rem;
+    border-radius: 50px;
+    box-shadow: 0 6px 20px var(--at-orange-glow);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--at-transition);
+    text-decoration: none;
+}
+
+.btn-freight-primary:hover {
+    background: linear-gradient(135deg, var(--at-orange-hover) 0%, var(--at-orange) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(255, 107, 0, 0.45);
+}
+
+.btn-freight-secondary {
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 0.75rem 1.6rem;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--at-transition);
+    text-decoration: none;
+}
+
+.btn-freight-secondary:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-freight-emerald {
+    background: linear-gradient(135deg, var(--at-emerald) 0%, #059669 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    border: none;
+    padding: 0.75rem 1.6rem;
+    border-radius: 50px;
+    box-shadow: 0 6px 20px var(--at-emerald-glow);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--at-transition);
+    text-decoration: none;
+}
+
+.btn-freight-emerald:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(16, 185, 129, 0.45);
+}
+
+/* ==========================================================================
+   HERO SECTION — High Impact Commercial Transport Showcase
+   ========================================================================== */
+.hero-wrapper {
+    background: radial-gradient(circle at 85% 15%, rgba(255, 107, 0, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                linear-gradient(180deg, #070b14 0%, #0b1120 70%, #0f172a 100%);
+    color: #ffffff;
+    padding: 4.5rem 0 3.5rem;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+.hero-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 107, 0, 0.12);
+    border: 1px solid rgba(255, 107, 0, 0.35);
+    color: #ff9d42;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.hero-headline {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    color: #ffffff;
+    margin-bottom: 1.25rem;
+}
+
+.hero-gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #ffb26b 50%, var(--at-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-lead {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #94a3b8;
+    max-width: 580px;
+    margin-bottom: 2rem;
+}
+
+/* Hero Media Canvas & Floating Badges */
+.hero-visual-card {
+    position: relative;
+    border-radius: var(--at-radius-lg);
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-visual-img {
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+    transition: transform 0.6s ease;
+}
+
+.hero-visual-card:hover .hero-visual-img {
+    transform: scale(1.06);
+}
+
+.hero-visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(7, 11, 20, 0.1) 0%, rgba(7, 11, 20, 0.65) 100%);
+}
+
+/* Glassmorphism Floating Cards */
+.hero-glass-card {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--at-radius-md);
+    padding: 1.25rem;
+    color: #ffffff;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.hero-top-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(16, 185, 129, 0.92);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   INTEGRATED TRIP SEARCH BAR (Hero Base)
+   ========================================================================== */
+.hero-search-box {
+    background: #ffffff;
+    border-radius: var(--at-radius-lg);
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    margin-top: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-field-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--at-text-muted);
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-field-input {
+    border: 1px solid var(--at-border-light);
+    border-radius: var(--at-radius-sm);
+    padding: 0.65rem 0.9rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--at-text-dark);
+    width: 100%;
+    transition: var(--at-transition);
+}
+
+.search-field-input:focus {
+    border-color: var(--at-orange);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+}
+
+/* ==========================================================================
+   STATISTICS STRIP / COUNTER BAR
+   ========================================================================== */
+.stats-strip {
+    background: #0b1120;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2.5rem 0;
+}
+
+.stat-item-box {
+    text-align: center;
+    padding: 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-item-box:last-child {
+    border-right: none;
+}
+
+.stat-number {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.25rem;
+}
+
+.stat-number.accent {
+    background: linear-gradient(135deg, #ff9d42 0%, var(--at-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-number.emerald {
+    background: linear-gradient(135deg, #34d399 0%, var(--at-emerald) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+}
+
+/* ==========================================================================
+   SECTION HEADINGS & DECORATIVE PILLS
+   ========================================================================== */
+.section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--at-orange);
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.section-tag.emerald {
+    color: var(--at-emerald);
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.section-title {
+    font-size: 2.35rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--at-text-muted);
+    line-height: 1.6;
+    max-width: 680px;
+}
+
+/* ==========================================================================
+   PROCESS / HOW IT WORKS (01 - 04 STEPS)
+   ========================================================================== */
+.step-card {
+    background: #ffffff;
+    border: 1px solid var(--at-border-light);
+    border-radius: var(--at-radius-lg);
+    padding: 2rem 1.75rem;
+    height: 100%;
+    position: relative;
+    transition: var(--at-transition);
+    box-shadow: var(--at-shadow-sm);
+}
+
+.step-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--at-shadow-md);
+    border-color: rgba(255, 107, 0, 0.3);
+}
+
+.step-num-badge {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--at-orange);
+    opacity: 0.85;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    display: inline-block;
+}
+
+.step-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 107, 0, 0.1);
+    color: var(--at-orange);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   SERVICES & FEATURES CARDS (Grid 3x2)
+   ========================================================================== */
+.service-card {
+    background: #ffffff;
+    border: 1px solid var(--at-border-light);
+    border-radius: var(--at-radius-lg);
+    padding: 2.25rem 2rem;
+    height: 100%;
+    transition: var(--at-transition);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--at-shadow-sm);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--at-orange), var(--at-amber));
+    opacity: 0;
+    transition: var(--at-transition);
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--at-shadow-lg);
+    border-color: rgba(255, 107, 0, 0.25);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(245, 158, 11, 0.12) 100%);
+    color: var(--at-orange);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    transition: var(--at-transition);
+}
+
+.service-card:hover .service-icon-box {
+    background: linear-gradient(135deg, var(--at-orange) 0%, #ff8c00 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 20px var(--at-orange-glow);
+}
+
+/* ==========================================================================
+   WHY CHOOSE US & COMPARISON TABLE
+   ========================================================================== */
+.comparison-card {
+    background: #ffffff;
+    border-radius: var(--at-radius-lg);
+    border: 1px solid var(--at-border-light);
+    padding: 2rem;
+    box-shadow: var(--at-shadow-sm);
+}
+
+.comparison-card.highlight {
+    background: #0b1120;
+    color: #ffffff;
+    border: 1px solid rgba(255, 107, 0, 0.35);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.comparison-card.highlight h4 {
+    color: #ffffff;
+}
+
+.check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   CALL TO ACTION (CTA) SECTION
+   ========================================================================== */
+.cta-banner-wrapper {
+    background: radial-gradient(circle at 80% 30%, rgba(255, 107, 0, 0.2) 0%, transparent 40%),
+                linear-gradient(135deg, #070b14 0%, #0f172a 100%);
+    color: #ffffff;
+    border-radius: var(--at-radius-xl);
+    padding: 4.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cta-banner-wrapper h2 {
+    color: #ffffff;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+/* ==========================================================================
+   FOOTER — Dark Freight Logistics
+   ========================================================================== */
+.at-footer {
+    background: #070b14;
+    color: #94a3b8;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4.5rem 0 2rem;
+}
+
+.at-footer-brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.at-footer-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: var(--at-transition);
+    display: inline-block;
+    margin-bottom: 0.6rem;
+}
+
+.at-footer-link:hover {
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+/* ==========================================================================
+   DASHBOARDS & AUTHENTICATED PAGES
+   ========================================================================== */
+.dash-header-box {
+    background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%);
+    color: #ffffff;
+    border-radius: var(--at-radius-lg);
+    padding: 2rem 2.25rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--at-shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dash-header-box h2, .dash-header-box h3, .dash-header-box h4 {
+    color: #ffffff;
+}
+
+.dash-card {
+    background: #ffffff;
+    border-radius: var(--at-radius-md);
+    border: 1px solid var(--at-border-light);
+    box-shadow: var(--at-shadow-sm);
+    transition: var(--at-transition);
+}
+
+.dash-card:hover {
+    box-shadow: var(--at-shadow-md);
+}
+
+.dash-stat-widget {
+    background: #ffffff;
+    border-radius: var(--at-radius-md);
+    border: 1px solid var(--at-border-light);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--at-shadow-sm);
+    transition: var(--at-transition);
+}
+
+.dash-stat-widget:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--at-shadow-md);
+}
+
+.dash-stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.dash-stat-icon.orange {
+    background: linear-gradient(135deg, var(--at-orange), #ff8c00);
+}
+
+.dash-stat-icon.emerald {
+    background: linear-gradient(135deg, var(--at-emerald), #059669);
+}
+
+.dash-stat-icon.navy {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+}
+
+/* Tables */
+.table-freight {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table-freight thead th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--at-border-light);
+}
+
+.table-freight tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.92rem;
+}
+
+.table-freight tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-headline {
+        font-size: 2.6rem;
+    }
+    .stat-item-box {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .cta-banner-wrapper {
+        padding: 3rem 1.5rem;
+    }
+    .cta-banner-wrapper h2 {
+        font-size: 2.1rem;
+    }
+}
+
+
+/* ==========================================================================
+   LEGACY & DASHBOARD COMPATIBILITY HELPERS
+   ========================================================================== */
+.card-agro {
+    background: #ffffff;
+    border-radius: var(--at-radius-md);
+    border: 1px solid var(--at-border-light);
+    box-shadow: var(--at-shadow-sm);
+    transition: var(--at-transition);
+}
+
+.card-agro:hover {
+    box-shadow: var(--at-shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-agro-primary {
+    background: linear-gradient(135deg, var(--at-orange) 0%, #ff8c00 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px var(--at-orange-glow);
+    transition: var(--at-transition);
+}
+
+.btn-agro-primary:hover {
+    background: linear-gradient(135deg, var(--at-orange-hover) 0%, var(--at-orange) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--at-orange-glow);
+}
+
+.btn-agro-outline {
+    border: 1.5px solid var(--at-orange);
+    color: var(--at-orange) !important;
+    font-weight: 600;
+    border-radius: 50px;
+    background: transparent;
+    transition: var(--at-transition);
+}
+
+.btn-agro-outline:hover {
+    background: var(--at-orange);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.quick-action-card {
+    transition: var(--at-transition);
+    text-decoration: none;
+    border-radius: var(--at-radius-md);
+}
+
+.quick-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--at-shadow-md);
+    border-color: var(--at-orange);
+}
+
+.pooling-progress {
+    height: 8px;
+    border-radius: 50px;
+    background-color: #e2e8f0;
+}
+
+.user-avatar-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--at-orange), var(--at-amber));
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}

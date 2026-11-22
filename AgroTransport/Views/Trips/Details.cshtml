@@ -1,0 +1,256 @@
+@model AgroTransport.ViewModels.Trips.TripDetailsViewModel
+@{
+    var trip = Model.Trip;
+    ViewData["Title"] = $"Trip: {trip.SourceLocation} to {trip.DestinationLocation}";
+}
+
+<div class="py-2">
+    <div class="mb-3">
+        <a asp-controller="Trips" asp-action="Search" class="text-muted small text-decoration-none">
+            &larr; Back to Trip Search Results
+        </a>
+    </div>
+
+    <!-- Active User Booking Notice if already booked -->
+    @if (Model.CurrentUserBooking != null)
+    {
+        <div class="alert alert-success border-0 shadow-sm rounded-3 d-flex align-items-center justify-content-between mb-4">
+            <div>
+                <i class="bi bi-check-circle-fill fs-5 text-success me-2"></i>
+                <strong>You have an active booking on this trip!</strong>
+                <span class="ms-2">Produce: @Model.CurrentUserBooking.ProduceType (@Model.CurrentUserBooking.RequestedQuantityKg.ToString("N0") kg) &bull; Status: <span class="badge bg-success">@Model.CurrentUserBooking.Status</span></span>
+            </div>
+            <a asp-controller="Bookings" asp-action="Details" asp-route-id="@Model.CurrentUserBooking.Id" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                View My Booking Slip
+            </a>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Main Trip Details -->
+        <div class="col-lg-8">
+            <div class="card card-agro p-4 p-md-5 border-0 shadow-sm mb-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="badge bg-agro-primary text-white px-3 py-1 rounded-pill mb-2">
+                            @trip.Vehicle?.VehicleType
+                        </span>
+                        <h2 class="display-6 fw-bold text-dark mb-1">
+                            @trip.SourceLocation &rarr; @trip.DestinationLocation
+                        </h2>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-shop text-success me-1"></i> Destination Mandi: <strong>@trip.MandiName</strong>
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-light text-success border fs-5 fw-bold px-3 py-2 rounded-3">
+                            ₹@trip.CostPerKg.ToString("F2") <small class="text-muted fw-normal" style="font-size: 0.75rem;">/ kg</small>
+                        </span>
+                        <small class="d-block text-muted mt-1">Proportional Rate</small>
+                    </div>
+                </div>
+
+                <hr class="my-3">
+
+                <!-- Route & Timing Grid -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-md-3">
+                        <small class="text-muted d-block">Departure Date</small>
+                        <strong class="text-dark">@trip.DepartureDate.ToString("dd MMM yyyy")</strong>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <small class="text-muted d-block">Departure Time</small>
+                        <strong class="text-dark">@trip.DepartureTime.ToString(@"hh\:mm")</strong>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <small class="text-muted d-block">Charter Cost</small>
+                        <strong class="text-dark">₹@trip.TotalCost.ToString("N0")</strong>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <small class="text-muted d-block">Trip Status</small>
+                        <span class="badge @(trip.TripStatus == "Scheduled" ? "badge-status-scheduled" : "badge-status-completed")">
+                            @trip.TripStatus
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Vehicle Bed Space Utilization -->
+                <div class="bg-light p-4 rounded-4 mb-4">
+                    <h6 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-pie-chart-fill text-success me-1"></i> Current Vehicle Space Pooling Status
+                    </h6>
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span>Booked: <strong>@Model.OccupiedCapacityKg.ToString("N0") kg</strong> (@Model.OccupiedPercentage.ToString("F0")%)</span>
+                        <span class="text-success fw-bold">Remaining Available: @trip.AvailableCapacityKg.ToString("N0") kg</span>
+                        <span>Total Truck Bed: <strong>@trip.TotalCapacityKg.ToString("N0") kg</strong></span>
+                    </div>
+                    <div class="progress pooling-progress mb-2" style="height: 12px;">
+                        <div class="progress-bar bg-success" style="width: @Model.OccupiedPercentage%"></div>
+                    </div>
+                    <small class="text-muted">
+                        Multiple farmers share this vehicle. When you book a share, you pay strictly for your weight and help fill empty truck space.
+                    </small>
+                </div>
+
+                @if (!string.IsNullOrEmpty(trip.Description))
+                {
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-dark mb-2">Route Notes & Loading Instructions:</h6>
+                        <p class="text-muted bg-white p-3 rounded-3 border mb-0 small">@trip.Description</p>
+                    </div>
+                }
+
+                <!-- Active Pooling Farmers List (Anonymous summary) -->
+                <div>
+                    <h6 class="fw-bold text-dark mb-3">
+                        <i class="bi bi-people-fill text-primary me-1"></i> Current Farmers in this Pool:
+                    </h6>
+                    @if (Model.ConfirmedBookings.Any())
+                    {
+                        <div class="d-flex flex-column gap-2">
+                            @foreach (var b in Model.ConfirmedBookings)
+                            {
+                                <div class="p-3 border rounded-3 bg-white d-flex justify-content-between align-items-center small">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-person-check-fill text-success fs-5"></i>
+                                        <div>
+                                            <strong class="text-dark">Farmer (@(b.PickupVillage ?? b.Farmer?.Village ?? "Nearby Village"))</strong>
+                                            <span class="text-muted d-block">Produce: @b.ProduceType</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-light text-dark border">@b.RequestedQuantityKg.ToString("N0") kg</span>
+                                        <strong class="text-success ms-2">₹@b.TotalCost.ToString("N0")</strong>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted small mb-0">No other farmers have joined this vehicle yet. Be the first to reserve space!</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Booking Action & Interactive Calculator -->
+        <div class="col-lg-4">
+            <!-- Join Trip Card -->
+            <div class="card card-agro p-4 border-0 shadow-sm mb-4">
+                <h5 class="fw-bold text-dark mb-3">Reserve Space in this Vehicle</h5>
+
+                @if (Model.CanBook)
+                {
+                    <p class="text-muted small mb-3">
+                        Remaining available capacity: <strong class="text-success">@trip.AvailableCapacityKg.ToString("N0") kg</strong>.
+                    </p>
+                    <a asp-controller="Bookings" asp-action="Create" asp-route-tripId="@trip.Id" class="btn btn-agro-primary btn-lg w-100 rounded-pill py-3 fw-bold shadow">
+                        <i class="bi bi-plus-circle me-1"></i> Join This Trip
+                    </a>
+                }
+                else if (Model.IsOwner)
+                {
+                    <div class="alert alert-info small mb-3">
+                        <i class="bi bi-info-circle me-1"></i> You are the registered transporter for this trip.
+                    </div>
+                    <a asp-controller="Transporter" asp-action="TripBookings" asp-route-id="@trip.Id" class="btn btn-primary w-100 rounded-pill py-2">
+                        Manage Trip Pooling Roster &rarr;
+                    </a>
+                }
+                else if (Model.CurrentUserBooking != null)
+                {
+                    <div class="alert alert-success small mb-0">
+                        You have already submitted a booking for this trip. Check your dashboard for status updates.
+                    </div>
+                }
+                else if (trip.AvailableCapacityKg <= 0)
+                {
+                    <div class="alert alert-danger small mb-0">
+                        This vehicle has reached 100% full capacity. No further bookings can be accepted.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-secondary small mb-3">
+                        Please sign in as a <strong>Farmer</strong> to book space in this vehicle.
+                    </div>
+                    <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" class="btn btn-agro-primary w-100 rounded-pill">
+                        Sign In to Join Trip
+                    </a>
+                }
+            </div>
+
+            <!-- Dynamic Live Calculator Widget (JS powered) -->
+            <div class="card card-agro p-4 border-0 shadow-sm mb-4">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-calculator-fill text-success fs-5"></i>
+                    <h6 class="fw-bold text-dark mb-0">Estimated Fare Calculator</h6>
+                </div>
+                <p class="text-muted small mb-3">Calculate your estimated share based on weight:</p>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Produce Weight (kg):</label>
+                    <input type="number" id="calcInputKg" class="form-control" value="500" min="50" max="@trip.AvailableCapacityKg" step="50" />
+                </div>
+
+                <div class="bg-light p-3 rounded-3 small">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Unit Rate:</span>
+                        <strong>₹@trip.CostPerKg.ToString("F2") / kg</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">Your Share:</span>
+                        <strong class="text-success fs-6" id="calcResultCost">₹@(500 * trip.CostPerKg)</strong>
+                    </div>
+                    <div class="d-flex justify-content-between pt-1 border-top">
+                        <span class="text-muted">Est. Savings vs Charter:</span>
+                        <strong class="text-primary" id="calcSavings">₹@(trip.TotalCost - (500 * trip.CostPerKg))</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transporter Info Card -->
+            <div class="card card-agro p-4 border-0 shadow-sm">
+                <h6 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-shield-check text-success me-1"></i> Verified Transport Partner
+                </h6>
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="user-avatar-circle bg-primary" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                        @(trip.Transporter?.FullName.Substring(0, 1).ToUpper() ?? "T")
+                    </div>
+                    <div>
+                        <strong class="d-block text-dark">@trip.Transporter?.FullName</strong>
+                        <small class="text-muted">@trip.Transporter?.Village, @trip.Transporter?.District</small>
+                    </div>
+                </div>
+                <ul class="list-unstyled small text-muted mb-0 d-flex flex-column gap-1">
+                    <li><i class="bi bi-truck me-2 text-dark"></i> Vehicle: <strong>@trip.Vehicle?.Model</strong></li>
+                    <li><i class="bi bi-credit-card-2-front me-2 text-dark"></i> Reg: <strong>@trip.Vehicle?.RegistrationNumber</strong></li>
+                    <li><i class="bi bi-telephone me-2 text-dark"></i> Contact: <strong>@trip.Transporter?.PhoneNumber</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const costPerKg = @trip.CostPerKg;
+        const totalTripCost = @trip.TotalCost;
+        const calcInput = document.getElementById('calcInputKg');
+        const calcCost = document.getElementById('calcResultCost');
+        const calcSavings = document.getElementById('calcSavings');
+
+        if (calcInput) {
+            calcInput.addEventListener('input', function() {
+                const kg = parseFloat(this.value) || 0;
+                const cost = (kg * costPerKg).toFixed(2);
+                calcCost.textContent = '₹' + Number(cost).toLocaleString('en-IN');
+                const savings = Math.max(0, totalTripCost - cost).toFixed(2);
+                calcSavings.textContent = '₹' + Number(savings).toLocaleString('en-IN');
+            });
+        }
+    </script>
+}
+

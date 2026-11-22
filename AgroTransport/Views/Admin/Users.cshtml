@@ -1,0 +1,78 @@
+@model List<AgroTransport.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="py-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <a asp-controller="Admin" asp-action="Index" class="text-muted small text-decoration-none">&larr; Back to Admin Console</a>
+            <h2 class="fw-bold text-dark mt-1 mb-0">Platform User Management</h2>
+            <p class="text-muted small mb-0">Inspect registered farmers and freight transporters, and manage activation status.</p>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a asp-controller="Admin" asp-action="Users" class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.SelectedRole) ? "btn-dark" : "btn-outline-dark") rounded-pill px-3">All</a>
+            <a asp-controller="Admin" asp-action="Users" asp-route-role="Farmer" class="btn btn-sm @(ViewBag.SelectedRole == "Farmer" ? "btn-success" : "btn-outline-success") rounded-pill px-3">Farmers</a>
+            <a asp-controller="Admin" asp-action="Users" asp-route-role="Transporter" class="btn btn-sm @(ViewBag.SelectedRole == "Transporter" ? "btn-primary" : "btn-outline-primary") rounded-pill px-3">Transporters</a>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Contact & Phone</th>
+                        <th>Location (Village, District, State)</th>
+                        <th>Registered Date</th>
+                        <th>Account Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong class="text-dark d-block">@user.FullName</strong>
+                                <small class="text-muted">@user.Email</small>
+                            </td>
+                            <td>
+                                <span class="badge @(user.UserRole == "Farmer" ? "bg-success" : user.UserRole == "Transporter" ? "bg-primary" : "bg-danger")">
+                                    @user.UserRole
+                                </span>
+                            </td>
+                            <td>@user.PhoneNumber</td>
+                            <td>@user.Village, @user.District, @user.State</td>
+                            <td>@user.ProfileCreatedAt.ToString("dd MMM yyyy")</td>
+                            <td>
+                                <span class="badge @(user.IsActive ? "bg-success" : "bg-danger")">
+                                    @(user.IsActive ? "Active" : "Deactivated")
+                                </span>
+                            </td>
+                            <td>
+                                @if (user.UserRole != "Administrator")
+                                {
+                                    <form asp-controller="Admin" asp-action="ToggleUserStatus" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm @(user.IsActive ? "btn-outline-danger" : "btn-outline-success") rounded-pill px-3 py-1" onclick="return confirm('Toggle active status for user @user.FullName?')">
+                                            @(user.IsActive ? "Deactivate" : "Activate")
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Protected</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

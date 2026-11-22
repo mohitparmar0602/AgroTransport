@@ -1,0 +1,60 @@
+@model List<AgroTransport.Models.VwBookingSummary>
+@{
+    ViewData["Title"] = "SQL View: vw_TripBookingSummary";
+}
+
+<div class="py-2">
+    <div class="card card-agro p-4 border-0 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-primary mb-2">INT402 Unit V &ndash; SQL Aggregation & Joins Demonstration</span>
+                <h3 class="fw-bold text-dark mb-1">Database View: dbo.vw_TripBookingSummary</h3>
+                <p class="text-muted small mb-0">
+                    Demonstrates complex SQL <code>GROUP BY</code>, <code>SUM()</code>, <code>COUNT()</code>, and conditional aggregation over relational tables.
+                </p>
+            </div>
+            <a asp-controller="Trips" asp-action="ActiveTripsView" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                &larr; Back to Active Trips View
+            </a>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Trip ID</th>
+                        <th>Route & Market</th>
+                        <th>Transporter</th>
+                        <th>Capacity</th>
+                        <th>Booked kg</th>
+                        <th>Available kg</th>
+                        <th>Accepted Bookings</th>
+                        <th>Total Bookings</th>
+                        <th>Collected Fare</th>
+                        <th>Charter Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong class="badge bg-light text-dark border">#@item.TripId</strong></td>
+                            <td><strong>@item.Route</strong></td>
+                            <td>@item.TransporterName</td>
+                            <td>@item.TotalCapacityKg.ToString("N0") kg</td>
+                            <td><strong>@item.TotalBookedKg.ToString("N0")</strong> kg</td>
+                            <td><span class="text-success fw-bold">@item.AvailableCapacityKg.ToString("N0") kg</span></td>
+                            <td><span class="badge bg-success">@item.AcceptedBookingsCount</span></td>
+                            <td>@item.TotalBookingsCount</td>
+                            <td><strong class="text-success">₹@item.TotalCollectedRevenue.ToString("N0")</strong></td>
+                            <td>₹@item.TripTotalCost.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

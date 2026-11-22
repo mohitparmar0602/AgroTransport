@@ -1,0 +1,81 @@
+@model AgroTransport.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="row justify-content-center py-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card card-agro border-0 shadow-lg p-4 p-md-5">
+            <div class="text-center mb-4">
+                <div class="brand-icon-box mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Welcome Back</h3>
+                <p class="text-muted small">Sign in to manage your bookings, vehicles, and pooled trips</p>
+            </div>
+
+            <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 rounded-3" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold small text-dark"></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+                        <input asp-for="Email" class="form-control border-start-0 ps-0" placeholder="name@example.com" id="loginEmail" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold small text-dark"></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                        <input asp-for="Password" class="form-control border-start-0 ps-0" placeholder="••••••••" id="loginPassword" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label small text-muted"></label>
+                </div>
+
+                <button type="submit" class="btn btn-agro-primary w-100 py-2 rounded-pill fw-bold shadow-sm mb-3">
+                    Sign In <i class="bi bi-box-arrow-in-right ms-1"></i>
+                </button>
+
+                <p class="text-center text-muted small mb-0">
+                    Don't have an account? <a asp-controller="Account" asp-action="Register" class="text-success fw-bold text-decoration-none">Register here</a>
+                </p>
+            </form>
+
+            <!-- Quick Demo Credentials for Viva / Testing -->
+            <div class="mt-4 pt-3 border-top">
+                <small class="text-muted fw-bold d-block text-center mb-2">⚡ Quick 1-Click Demo Login:</small>
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="fillLogin('harpal@farmer.com', 'Farmer@123')">
+                        Farmer
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="fillLogin('gurpreet@transporter.com', 'Transporter@123')">
+                        Transporter
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="fillLogin('admin@agrotransport.com', 'Admin@123')">
+                        Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function fillLogin(email, password) {
+            document.getElementById('loginEmail').value = email;
+            document.getElementById('loginPassword').value = password;
+        }
+    </script>
+}
+

@@ -1,0 +1,50 @@
+@model List<AgroTransport.Models.Vehicle>
+@{
+    ViewData["Title"] = "All Fleet Vehicles";
+}
+
+<div class="py-2">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <a asp-controller="Admin" asp-action="Index" class="text-muted small text-decoration-none">&larr; Back to Admin Console</a>
+            <h2 class="fw-bold text-dark mt-1 mb-0">Platform Fleet Registry</h2>
+            <p class="text-muted small mb-0">Audit of all freight vehicles registered by carriers on AgroTransport.</p>
+        </div>
+    </div>
+
+    <div class="card card-agro p-4 border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Registration No</th>
+                        <th>Transporter Owner</th>
+                        <th>Model & Make</th>
+                        <th>Vehicle Type</th>
+                        <th>Max Capacity</th>
+                        <th>Status</th>
+                        <th>Trips Scheduled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var v in Model)
+                    {
+                        <tr>
+                            <td><strong class="text-dark fs-6">@v.RegistrationNumber</strong></td>
+                            <td>
+                                <div>@v.Transporter?.FullName</div>
+                                <small class="text-muted">@v.Transporter?.PhoneNumber</small>
+                            </td>
+                            <td>@v.Model</td>
+                            <td><span class="badge bg-light text-dark border">@v.VehicleType</span></td>
+                            <td><strong class="text-success fs-6">@v.CapacityKg.ToString("N0")</strong> kg</td>
+                            <td><span class="badge @(v.Status == "Active" ? "bg-success" : "bg-secondary")">@v.Status</span></td>
+                            <td>@v.Trips.Count Trips</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
