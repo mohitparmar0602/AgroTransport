@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AgroTransport.Models
 {
@@ -14,10 +15,11 @@ namespace AgroTransport.Models
         [Display(Name = "Request ID")]
         public int Id { get; set; }
 
-        [Required]
+        [ValidateNever]
         [Display(Name = "Farmer")]
         public string FarmerId { get; set; } = string.Empty;
 
+        [ValidateNever]
         [ForeignKey(nameof(FarmerId))]
         public virtual ApplicationUser? Farmer { get; set; }
 
@@ -42,7 +44,7 @@ namespace AgroTransport.Models
         public string ProduceType { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Required capacity is required.")]
-        [Range(1, 50000, ErrorMessage = "Required capacity must be at least 1 kg.")]
+        [Range(1, 50000, ErrorMessage = "Required capacity must be between 1 and 50,000 kg.")]
         [Column(TypeName = "decimal(10,2)")]
         [Display(Name = "Required Capacity (kg)")]
         public decimal RequiredCapacityKg { get; set; }
@@ -63,11 +65,12 @@ namespace AgroTransport.Models
         /// <summary>
         /// Status: Open, Accepted, Fulfilled, Cancelled
         /// </summary>
-        [Required]
+        [ValidateNever]
         [StringLength(30)]
         [Display(Name = "Request Status")]
         public string Status { get; set; } = "Open";
 
+        [ValidateNever]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

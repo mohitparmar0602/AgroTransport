@@ -44,12 +44,25 @@ namespace AgroTransport.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TransportRequest model)
         {
+            var farmerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(farmerId))
+            {
+                return Challenge();
+            }
+
+            model.FarmerId = farmerId;
+            model.Status = "Open";
+            ModelState.Remove(nameof(TransportRequest.FarmerId));
+            ModelState.Remove(nameof(TransportRequest.Farmer));
+            ModelState.Remove(nameof(TransportRequest.Status));
+            ModelState.Remove("FarmerId");
+            ModelState.Remove("Farmer");
+            ModelState.Remove("Status");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            model.FarmerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
             var (success, message, requestId) = await _requestService.CreateRequestAsync(model);
             if (!success)
